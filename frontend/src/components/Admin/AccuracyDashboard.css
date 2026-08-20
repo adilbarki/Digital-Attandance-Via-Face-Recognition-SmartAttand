@@ -1,0 +1,549 @@
+/* Accuracy Dashboard - Professional CSS */
+.accuracy-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.accuracy-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.accuracy-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.accuracy-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 0%, #e0d4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.accuracy-header p {
+  color: rgba(255,255,255,0.9);
+  font-size: 1rem;
+}
+
+/* Main Accuracy Card */
+.main-accuracy-card {
+  background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%);
+  border-radius: 2rem;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform 0.3s ease;
+}
+
+.main-accuracy-card:hover {
+  transform: translateY(-5px);
+}
+
+.accuracy-percentage {
+  font-size: 5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffd700, #ff8c00);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.accuracy-label {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 0.5rem;
+}
+
+.accuracy-subtext {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+}
+
+/* Stats Grid */
+.accuracy-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value.green { color: #10b981; }
+.stat-value.blue { color: #3b82f6; }
+.stat-value.purple { color: #8b5cf6; }
+.stat-value.gray { color: #6b7280; }
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-subtext {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  margin-top: 0.5rem;
+}
+
+/* Section Card */
+.accuracy-section-card {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.accuracy-section-card:hover {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title i {
+  color: #8b5cf6;
+}
+
+/* Chart Container (NEW) */
+.chart-container {
+  background: white;
+  border-radius: 1rem;
+  padding: 1rem;
+  height: 350px;
+  width: 100%;
+}
+
+/* Progress Bar Styles */
+.progress-item {
+  margin-bottom: 1.25rem;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.progress-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+.progress-percent {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.progress-bar-bg {
+  background: #e5e7eb;
+  border-radius: 1rem;
+  height: 0.75rem;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 1rem;
+  transition: width 0.5s ease;
+}
+
+.progress-bar-fill.high { background: linear-gradient(90deg, #10b981, #059669); }
+.progress-bar-fill.medium { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.progress-bar-fill.low { background: linear-gradient(90deg, #ef4444, #dc2626); }
+.progress-bar-fill.blue { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+.progress-bar-fill.purple { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+
+/* Table Styles */
+.accuracy-table-container {
+  overflow-x: auto;
+  border-radius: 1rem;
+}
+
+.accuracy-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.accuracy-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.accuracy-table th {
+  padding: 1rem;
+  text-align: left;
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.accuracy-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+}
+
+.accuracy-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Table Header Fix - Make it visible */
+.accuracy-table thead tr {
+  background: linear-gradient(135deg, #4c1d95, #2e1065);
+}
+
+.accuracy-table th {
+  background: transparent;
+  color: white !important;
+  font-weight: 600;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: none;
+}
+
+.accuracy-table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.accuracy-table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+/* Make sure text is visible */
+.accuracy-table th span,
+.accuracy-table th div {
+  color: white !important;
+}
+
+/* Table body styling */
+.accuracy-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #374151;
+  background: white;
+}
+
+/* Table container background */
+.accuracy-table-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.confidence-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+/* Daily Trend Items */
+.daily-trend-item {
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.5s ease;
+}
+
+.trend-date {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.trend-date span:first-child {
+  font-weight: 500;
+  color: #374151;
+}
+
+.trend-date span:last-child {
+  font-weight: 600;
+  color: #8b5cf6;
+}
+
+.trend-bar-bg {
+  background: #e5e7eb;
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.trend-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 0.5rem;
+  transition: width 0.5s ease;
+}
+
+/* Student Item */
+.student-item {
+  margin-bottom: 1rem;
+}
+
+.student-name {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.student-name span:first-child {
+  font-weight: 500;
+  color: #374151;
+}
+
+.student-name span:last-child {
+  font-weight: 600;
+  color: #10b981;
+}
+
+.student-bar-bg {
+  background: #e5e7eb;
+  border-radius: 0.5rem;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.student-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 0.5rem;
+  transition: width 0.5s ease;
+}
+
+/* Bar Chart Styles */
+.bar-chart-container {
+  margin-top: 20px;
+}
+
+.bar-item {
+  margin-bottom: 20px;
+}
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.bar-name {
+  font-weight: 500;
+  color: #374151;
+}
+
+.bar-percentage {
+  font-weight: 600;
+  color: #4c1d95;
+}
+
+.bar-bg {
+  background: #e5e7eb;
+  border-radius: 10px;
+  height: 32px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  transition: width 0.5s ease;
+}
+
+/* Action Buttons */
+.accuracy-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.btn-refresh {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-refresh:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-recalculate {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-recalculate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Loading Spinner */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(139, 92, 246, 0.3);
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .accuracy-dashboard {
+    padding: 1rem;
+  }
+  
+  .accuracy-percentage {
+    font-size: 3rem;
+  }
+  
+  .accuracy-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .chart-container {
+    height: 250px;
+  }
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeInUp 0.5s ease;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }

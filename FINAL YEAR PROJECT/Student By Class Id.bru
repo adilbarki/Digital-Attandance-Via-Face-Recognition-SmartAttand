@@ -1,0 +1,19 @@
+meta {
+  name: Student By Class Id
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:8000/students/class/69f0513ae63ea0eeed2b8235
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGlsbmF3YXpAZ21haWwuY29tIiwidXNlcl9pZCI6IjY5ZWVlNjEwNmIwYTc1ZTlkMmJkODQ5MSIsInJvbGUiOiJ0ZWFjaGVyIiwiZXhwIjoxNzgwMjg4MzYwfQ.B0nOO33qHdAnDxZdngY5sclZroQh1kE38PecdCI2EU8
+}
+
+settings {
+  encodeUrl: true
+}

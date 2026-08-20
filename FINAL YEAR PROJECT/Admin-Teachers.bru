@@ -1,0 +1,19 @@
+meta {
+  name: Admin/Teachers
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:8000/admin/teachers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJ1c2VyX2lkIjoiNmExM2Q5ZTE2MDJkNDUxMWE4YThmZDE4Iiwicm9sZSI6ImFkbWluIiwiZXhwIjoxNzgxMTAwOTYzfQ.XibKAv1NvuFg8ppk9uwUz_uQn5nXdIlkVzyicwSHXrg
+}
+
+settings {
+  encodeUrl: true
+}

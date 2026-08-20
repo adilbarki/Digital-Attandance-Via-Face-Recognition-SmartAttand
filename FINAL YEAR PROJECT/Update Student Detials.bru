@@ -1,0 +1,32 @@
+meta {
+  name: Update Student Detials
+  type: http
+  seq: 8
+}
+
+put {
+  url: http://localhost:8000/students/69f05ff64494b8a896c82ae7
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGlsbmF3YXpAZ21haWwuY29tIiwidXNlcl9pZCI6IjY5ZWVlNjEwNmIwYTc1ZTlkMmJkODQ5MSIsInJvbGUiOiJ0ZWFjaGVyIiwiZXhwIjoxNzgwMzM5NDk5fQ.lgooPOsxHE_EwciAYqxlZOgDCAb53FOrOTV5-GEgUcE
+}
+
+body:json {
+  {
+    "name": "Adil_Nawaz",
+    "email": "adil@gmail.com",
+    "roll_number": "2211",
+    "university_roll_no": "2211",
+    "class_id": "69f0513ae63ea0eeed2b8235",
+    "mobile_number": "03137651005",
+    "father_mobile": "03469719119"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

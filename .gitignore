@@ -1,0 +1,8 @@
+node_modules/
+face_data/
+uploads/
+.env
+.env.*
+__pycache__/
+*.pyc
+venv/

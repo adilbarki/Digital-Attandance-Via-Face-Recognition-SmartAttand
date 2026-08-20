@@ -1,0 +1,28 @@
+meta {
+  name: Signup
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8000/auth/signup
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username": "Adil_Nawaz",
+    "email": "adil@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "full_name": "Adil Nawaz",
+    "student_id": "2255",
+    "teacher_id" :"69eee6106b0a75e9d2bd8491"
+  
+  }
+}
+
+settings {
+  encodeUrl: true
+}

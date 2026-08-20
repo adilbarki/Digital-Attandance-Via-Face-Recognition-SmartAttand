@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.pyc
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment variables (SENSITIVE!)
+.env
+.env.*
+.env.local
+.env.production
+
+# Face Recognition Data (SENSITIVE!)
+face_data/
+uploads/
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Docker
+*.pid
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Reports (generated files)
+reports/
+*.pdf
+*.xlsx

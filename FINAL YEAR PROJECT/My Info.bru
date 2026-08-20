@@ -1,0 +1,19 @@
+meta {
+  name: My Info
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://localhost:8000/students/profile
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGlsQGdtYWlsLmNvbSIsInVzZXJfaWQiOiI2OWVlZTU0OTZiMGE3NWU5ZDJiZDg0OTAiLCJyb2xlIjoic3R1ZGVudCIsImV4cCI6MTc4MDM5MDU0M30.7Bgf8XXVNDSAaKGyAsVRnhVTmXi2ozYKBKUhKrg4Mds
+}
+
+settings {
+  encodeUrl: true
+}
