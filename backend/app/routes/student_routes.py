@@ -463,8 +463,8 @@ async def add_student(
     if existing:
         raise HTTPException(status_code=400, detail=f"Student with roll number {roll_number} already exists")
     
-    os.makedirs("face_data/dataset", exist_ok=True)
-    student_folder = f"face_data/dataset/{roll_number}"
+    os.makedirs("face_data/dataset_fairface", exist_ok=True)  # ✅ Changed to dataset_fairface
+    student_folder = f"face_data/dataset_fairface/{roll_number}"  # ✅ Changed to dataset_fairface
     os.makedirs(student_folder, exist_ok=True)
     
     photo_filename = f"{datetime.now().strftime('%Y%m%d_%H%M%S')}_{photo.filename}"

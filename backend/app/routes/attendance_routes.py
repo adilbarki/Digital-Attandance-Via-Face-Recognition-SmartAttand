@@ -722,7 +722,7 @@ async def recognize_face_with_class(
     
     # Get all students enrolled in this class
     class_students = await db.students.find({"class_id": class_id}).to_list(None)
-    class_student_names = [s.get("name") for s in class_students]
+    class_student_roll_numbers = [s.get("roll_number") for s in class_students]
     
     if not KNOWN_ENCODINGS:
         return {"recognized": False, "message": "Face recognition model not loaded"}
@@ -749,25 +749,37 @@ async def recognize_face_with_class(
         best_match_index = np.argmin(distances)
         
         if distances[best_match_index] < 0.45:
-            name = KNOWN_NAMES[best_match_index]
+            # ✅ KNOWN_NAMES mein roll numbers hain
+            roll_number = KNOWN_NAMES[best_match_index]
             confidence = 1 - distances[best_match_index]
             
-            # Get student for roll_number
-            student = await db.students.find_one({"name": name})
-            
-            # Check if student belongs to this class
-            if name not in class_student_names:
+            # ✅ Get student by roll_number
+            student = await db.students.find_one({"roll_number": roll_number})
+            if not student:
                 return {
                     "recognized": True,
-                    "name": name,
+                    "name": roll_number,
+                    "roll_number": roll_number,
+                    "confidence": confidence,
+                    "message": f"Student with roll number {roll_number} not found in database"
+                }
+            
+            student_name = student.get("name", roll_number)
+            
+            # ✅ Check if student belongs to this class
+            if roll_number not in class_student_roll_numbers:
+                return {
+                    "recognized": True,
+                    "name": student_name,
+                    "roll_number": roll_number,
                     "confidence": confidence,
                     "not_in_class": True,
-                    "message": f"{name} is not enrolled in {class_info.get('class_name')}"
+                    "message": f"{student_name} is not enrolled in {class_info.get('class_name')}"
                 }
             
             # Check if already marked today for this class
             existing = await db.attendance.find_one({
-                "student_name": name,
+                "roll_number": roll_number,
                 "class_id": class_id,
                 "date": today
             })
@@ -775,18 +787,19 @@ async def recognize_face_with_class(
             if existing:
                 return {
                     "recognized": True,
-                    "name": name,
+                    "name": student_name,
+                    "roll_number": roll_number,
                     "confidence": confidence,
                     "already_marked": True,
-                    "message": f"ℹ️ {name} already marked today"
+                    "message": f"ℹ️ {student_name} already marked today"
                 }
             
             # Insert new attendance with roll_number
             try:
                 await db.attendance.insert_one({
-                    "student_name": name,
-                    "student_id": str(student["_id"]) if student else "",
-                    "roll_number": student.get("roll_number", "") if student else "",  # ✅ ADDED
+                    "student_name": student_name,
+                    "student_id": str(student["_id"]),
+                    "roll_number": roll_number,  # ✅ Primary key
                     "class_id": class_id,
                     "class_name": class_info.get("class_name", ""),
                     "course_name": class_info.get("subject", ""),
@@ -799,17 +812,19 @@ async def recognize_face_with_class(
                 
                 return {
                     "recognized": True,
-                    "name": name,
+                    "name": student_name,
+                    "roll_number": roll_number,
                     "confidence": confidence,
                     "time": current_time,
-                    "message": f"✅ {name} marked present for {class_info.get('class_name')}"
+                    "message": f"✅ {student_name} marked present for {class_info.get('class_name')}"
                 }
             except Exception as e:
                 return {
                     "recognized": True,
-                    "name": name,
+                    "name": student_name,
+                    "roll_number": roll_number,
                     "already_marked": True,
-                    "message": f"ℹ️ {name} already marked today"
+                    "message": f"ℹ️ {student_name} already marked today"
                 }
     
     return {"recognized": False, "message": "Face not recognized"}
@@ -872,4 +887,3 @@ async def manual_attendance_bulk(
         "success": True,
         "marked_count": marked_count
     }
-

@@ -5,7 +5,7 @@ from app.config.settings import settings
 from app.utils.db import connect_to_mongo, close_mongo_connection
 from app.routes import auth  # ← Import
 from app.routes import test
-from app.routes import auth, class_routes, student_routes,  attendance_routes
+from app.routes import auth, class_routes, student_routes,  attendance_routes, contact_routes, public_routes
 from app.routes import reports
 from app.routes import reports_pdf
 from app.routes import admin_routes
@@ -49,6 +49,8 @@ app.include_router(admin_routes.router)
 app.include_router(accuracy.router)
 app.include_router(accuracy.router, prefix="/api/accuracy", tags=["Accuracy"])
 app.include_router(search_routes.router)
+app.include_router(contact_routes.router)     # ✅ NEW
+app.include_router(public_routes.router) 
 
 @app.get("/")
 async def root():

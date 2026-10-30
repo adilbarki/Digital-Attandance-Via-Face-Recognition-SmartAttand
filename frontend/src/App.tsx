@@ -9,6 +9,9 @@ import TeacherDashboard from './components/Teacher/Dashboard';
 import StudentDashboard from './components/Student/Dashboard';
 import AdminDashboard from './components/Admin/Dashboard';
 import Homepage from './components/Home/Homepage';
+import PrivacyPolicy from './components/Home/PrivacyPolicy';
+import TermsOfService from './components/Home/TermsOfService';
+import CookiePolicy from './components/Home/CookiePolicy';
 import { getCurrentUser } from './services/auth';
 import AccuracyDashboard from './components/Admin/AccuracyDashboard';
 
@@ -32,7 +35,7 @@ function App() {
   return (
     <Router>
       <Toaster position="top-right" />
-      <div style={{ minHeight: '100vh', width: '100%', overflow: 'visible' }}>
+      <div style={{ minHeight: '100vh', width: '100%', overflow: 'visible', background: '#FFFFFF' }}>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Homepage />} />
@@ -40,6 +43,11 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          
+          {/* ✅ Legal Pages */}
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
           
           {/* Protected Routes */}
           <Route path="/teacher/dashboard" element={

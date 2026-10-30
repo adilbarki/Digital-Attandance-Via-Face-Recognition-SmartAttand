@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import api from '../../services/api';
 import './Homepage.css';
 
 const Homepage: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  
+  // ✅ Dynamic Stats
+  const [stats, setStats] = useState({
+    accuracy: 99.5,
+    institutions: 500,
+    students: 50000,
+    totalRecords: 0
+  });
+  
+  // ✅ Contact Form
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -15,24 +33,32 @@ const Homepage: React.FC = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Close menu when clicking a link
+  // ✅ Fetch dynamic stats
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await api.get('/public/stats');
+      console.log('📊 Dynamic stats:', response.data);
+      setStats({
+        accuracy: response.data.accuracy || 99.5,
+        institutions: response.data.institutions || 500,
+        students: response.data.students || 50000,
+        totalRecords: response.data.total_records || 0
+      });
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
   const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
-    // Save current section on scroll
     const handleScroll = () => {
-      const sections = [
-        "home",
-        "features",
-        "how-it-works",
-        "pricing",
-        "testimonials",
-        "faq",
-        "about",
-        "contact",
-      ];
+      const sections = ["home", "features", "how-it-works", "pricing", "testimonials", "faq", "about", "contact"];
       let currentSection = "home";
-
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -45,10 +71,7 @@ const Homepage: React.FC = () => {
       }
       localStorage.setItem("lastSection", currentSection);
     };
-
     window.addEventListener("scroll", handleScroll);
-
-    // Restore last section on refresh
     const lastSection = localStorage.getItem("lastSection");
     if (lastSection && lastSection !== "home") {
       const element = document.getElementById(lastSection);
@@ -58,11 +81,48 @@ const Homepage: React.FC = () => {
         }, 100);
       }
     }
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
- 
+  // ✅ Contact Form Submit
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!contactForm.name || !contactForm.email || !contactForm.message) {
+      toast.error('Please fill all fields');
+      return;
+    }
+    
+    setSending(true);
+    try {
+      const response = await api.post('/contact/send', contactForm);
+      
+      if (response.data.success) {
+        toast.success('Message sent successfully! We\'ll contact you soon.');
+        
+        // ✅ Open WhatsApp with the message
+        if (response.data.whatsapp_link) {
+          setTimeout(() => {
+            window.open(response.data.whatsapp_link, '_blank');
+          }, 1000);
+        }
+        
+        setContactForm({ name: '', email: '', message: '' });
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.detail || 'Failed to send message');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  // Format numbers with commas
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(0) + 'K+';
+    }
+    return num.toString();
+  };
 
   return (
     <div className="homepage" style={{ overflowY: "auto", height: "auto" }}>
@@ -79,49 +139,28 @@ const Homepage: React.FC = () => {
             </button>
           )}
           <ul className={`nav-menu ${isMobile && menuOpen ? "open" : ""}`}>
-            <li>
-              <a href="#home" onClick={closeMenu}>Home</a>
-            </li>
-            <li>
-              <a href="#features" onClick={closeMenu}>Features</a>
-            </li>
-            <li>
-              <a href="#how-it-works" onClick={closeMenu}>How It Works</a>
-            </li>
-            <li>
-              <a href="#about" onClick={closeMenu}>About</a>
-            </li>
-            <li>
-              <a href="#pricing" onClick={closeMenu}>Pricing</a>
-            </li>
-            <li>
-              <a href="#testimonials" onClick={closeMenu}>Testimonials</a>
-            </li>
-            <li>
-              <a href="#faq" onClick={closeMenu}>FAQ</a>
-            </li>
-            <li>
-              <a href="#contact" onClick={closeMenu}>Contact</a>
-            </li>
+            <li><a href="#home" onClick={closeMenu}>Home</a></li>
+            <li><a href="#features" onClick={closeMenu}>Features</a></li>
+            <li><a href="#how-it-works" onClick={closeMenu}>How It Works</a></li>
+            <li><a href="#about" onClick={closeMenu}>About</a></li>
+            <li><a href="#pricing" onClick={closeMenu}>Pricing</a></li>
+            <li><a href="#testimonials" onClick={closeMenu}>Testimonials</a></li>
+            <li><a href="#faq" onClick={closeMenu}>FAQ</a></li>
+            <li><a href="#contact" onClick={closeMenu}>Contact</a></li>
           </ul>
           <div className="nav-buttons">
-            <Link to="/login" className="btn-login">
-              Login
-            </Link>
-            <Link to="/signup" className="btn-signup">
-              Sign Up
-            </Link>
+            <Link to="/login" className="btn-login">Login</Link>
+            <Link to="/signup" className="btn-signup">Sign Up</Link>
           </div>
         </div>
       </nav>
 
-      {/* Page 1: Hero Section */}
+      {/* Hero Section - ✅ DYNAMIC STATS */}
       <section id="home" className="hero">
         <div className="hero-container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Digital Attendance via{" "}
-              <span className="highlight">Face Recognition</span>
+              Digital Attendance via <span className="highlight">Face Recognition</span>
             </h1>
             <p className="hero-subtitle">
               Modern, secure, and contactless attendance management system for
@@ -129,24 +168,22 @@ const Homepage: React.FC = () => {
               proxy attendance.
             </p>
             <div className="hero-buttons">
-              <Link to="/signup" className="btn-primary">
-                Get Started
-              </Link>
-              <Link to="/login" className="btn-secondary">
-                Login
-              </Link>
+              <Link to="/signup" className="btn-primary">Get Started</Link>
+              <Link to="/login" className="btn-secondary">Login</Link>
             </div>
+            
+            {/* ✅ DYNAMIC STATS HERE */}
             <div className="hero-stats">
               <div className="hero-stat">
-                <span className="hero-stat-number">500+</span>
+                <span className="hero-stat-number">{formatNumber(stats.institutions)}</span>
                 <span className="hero-stat-label">Institutions</span>
               </div>
               <div className="hero-stat">
-                <span className="hero-stat-number">50K+</span>
+                <span className="hero-stat-number">{formatNumber(stats.students)}</span>
                 <span className="hero-stat-label">Students</span>
               </div>
               <div className="hero-stat">
-                <span className="hero-stat-number">99.5%</span>
+                <span className="hero-stat-number">{stats.accuracy}%</span>
                 <span className="hero-stat-label">Accuracy</span>
               </div>
             </div>
@@ -159,61 +196,43 @@ const Homepage: React.FC = () => {
                   <div className="face-scan"></div>
                 </div>
                 <p className="demo-text">Face Detected: Adil_Nawaz</p>
-                <p className="demo-subtext">Confidence: 98.5%</p>
+                <p className="demo-subtext">Confidence: {stats.accuracy}%</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Page 2: Features Section */}
+      {/* Features Section */}
       <section id="features" className="features">
         <div className="container">
           <h2 className="section-title">Powerful Features</h2>
-          <p className="section-subtitle">
-            Everything you need for modern attendance management
-          </p>
-
+          <p className="section-subtitle">Everything you need for modern attendance management</p>
           <div className="features-grid">
             <div className="feature-card">
               <div className="feature-icon">📸</div>
               <h3>Face Recognition</h3>
-              <p>
-                Advanced AI-powered face recognition for accurate and fast
-                attendance marking.
-              </p>
+              <p>Advanced AI-powered face recognition for accurate and fast attendance marking.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">📊</div>
               <h3>Real-time Reports</h3>
-              <p>
-                Generate Excel and PDF reports with detailed attendance
-                analytics.
-              </p>
+              <p>Generate Excel and PDF reports with detailed attendance analytics.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">👥</div>
               <h3>Multi-role Support</h3>
-              <p>
-                Separate dashboards for Admin, Teachers, and Students with
-                role-based access.
-              </p>
+              <p>Separate dashboards for Admin, Teachers, and Students with role-based access.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">☁️</div>
               <h3>Cloud Based</h3>
-              <p>
-                Secure cloud storage with MongoDB Atlas, accessible from
-                anywhere.
-              </p>
+              <p>Secure cloud storage with MongoDB Atlas, accessible from anywhere.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">📱</div>
               <h3>Responsive Design</h3>
-              <p>
-                Fully responsive interface that works on desktop, tablet, and
-                mobile.
-              </p>
+              <p>Fully responsive interface that works on desktop, tablet, and mobile.</p>
             </div>
             <div className="feature-card">
               <div className="feature-icon">🔒</div>
@@ -224,14 +243,11 @@ const Homepage: React.FC = () => {
         </div>
       </section>
 
-      {/* Page 3: How It Works + Pricing */}
+      {/* How It Works + Pricing */}
       <section id="how-it-works" className="how-it-works">
         <div className="container">
           <h2 className="section-title">How It Works</h2>
-          <p className="section-subtitle">
-            Simple three-step process for attendance marking
-          </p>
-
+          <p className="section-subtitle">Simple three-step process for attendance marking</p>
           <div className="steps-container">
             <div className="step">
               <div className="step-number">1</div>
@@ -261,10 +277,7 @@ const Homepage: React.FC = () => {
       <section id="pricing" className="pricing">
         <div className="container">
           <h2 className="section-title">Simple Pricing</h2>
-          <p className="section-subtitle">
-            Choose the perfect plan for your institution
-          </p>
-
+          <p className="section-subtitle">Choose the perfect plan for your institution</p>
           <div className="pricing-grid">
             <div className="pricing-card">
               <div className="pricing-header">
@@ -280,18 +293,14 @@ const Homepage: React.FC = () => {
                 <li>❌ Advanced Reports</li>
                 <li>❌ API Access</li>
               </ul>
-              <Link to="/signup" className="pricing-btn">
-                Get Started
-              </Link>
+              <Link to="/signup" className="pricing-btn">Get Started</Link>
             </div>
 
             <div className="pricing-card popular">
               <div className="popular-badge">Most Popular</div>
               <div className="pricing-header">
                 <h3>Pro</h3>
-                <div className="pricing-price">
-                  $49<span>/month</span>
-                </div>
+                <div className="pricing-price">$49<span>/month</span></div>
                 <p>For medium institutions</p>
               </div>
               <ul className="pricing-features">
@@ -302,9 +311,7 @@ const Homepage: React.FC = () => {
                 <li>✅ Advanced Reports</li>
                 <li>✅ API Access</li>
               </ul>
-              <Link to="/signup" className="pricing-btn">
-                Get Started
-              </Link>
+              <Link to="/signup" className="pricing-btn">Get Started</Link>
             </div>
 
             <div className="pricing-card">
@@ -321,49 +328,33 @@ const Homepage: React.FC = () => {
                 <li>✅ Custom Integration</li>
                 <li>✅ SLA Guarantee</li>
               </ul>
-              <Link to="/contact" className="pricing-btn">
-                Contact Us
-              </Link>
+              <Link to="/contact" className="pricing-btn">Contact Us</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Page 4: Testimonials + FAQ + About + Contact */}
+      {/* Testimonials */}
       <section id="testimonials" className="testimonials">
         <div className="container">
           <h2 className="section-title">What Our Users Say</h2>
-          <p className="section-subtitle">
-            Trusted by educational institutions worldwide
-          </p>
-
+          <p className="section-subtitle">Trusted by educational institutions worldwide</p>
           <div className="testimonials-grid">
             <div className="testimonial-card">
               <div className="testimonial-icon">👨‍🏫</div>
-              <p className="testimonial-text">
-                "SmartAttend has revolutionized our attendance system. Time
-                saved is now used for teaching!"
-              </p>
+              <p className="testimonial-text">"SmartAttend has revolutionized our attendance system. Time saved is now used for teaching!"</p>
               <h4>Dr. Ahmed Raza</h4>
-              <p className="testimonial-role">
-                Principal, Karachi Grammar School
-              </p>
+              <p className="testimonial-role">Principal, Karachi Grammar School</p>
             </div>
             <div className="testimonial-card">
               <div className="testimonial-icon">👩‍🎓</div>
-              <p className="testimonial-text">
-                "No more proxy attendance. The face recognition is fast and
-                accurate."
-              </p>
+              <p className="testimonial-text">"No more proxy attendance. The face recognition is fast and accurate."</p>
               <h4>Sarah Khan</h4>
               <p className="testimonial-role">Student, LUMS</p>
             </div>
             <div className="testimonial-card">
               <div className="testimonial-icon">👨‍💻</div>
-              <p className="testimonial-text">
-                "The reports feature is excellent. Easy to export and share with
-                parents."
-              </p>
+              <p className="testimonial-text">"The reports feature is excellent. Easy to export and share with parents."</p>
               <h4>Usman Chaudhry</h4>
               <p className="testimonial-role">IT Director, Beaconhouse</p>
             </div>
@@ -371,12 +362,11 @@ const Homepage: React.FC = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
+      {/* FAQ */}
       <section id="faq" className="faq">
         <div className="container">
           <h2 className="section-title">Frequently Asked Questions</h2>
           <p className="section-subtitle">Got questions? We've got answers</p>
-
           <div className="faq-grid">
             <div className="faq-item">
               <h3>Is face recognition accurate in low light?</h3>
@@ -422,23 +412,14 @@ const Homepage: React.FC = () => {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About */}
       <section id="about" className="about">
         <div className="container">
           <h2 className="section-title">About SmartAttend</h2>
           <div className="about-content">
             <div className="about-text">
-              <p>
-                SmartAttend is a cutting-edge attendance management system that
-                leverages face recognition technology to automate and streamline
-                the attendance process for educational institutions.
-              </p>
-              <p>
-                Built with modern technologies including React, TypeScript,
-                FastAPI, and MongoDB, SmartAttend offers a secure, efficient,
-                and user-friendly solution for teachers, students, and
-                administrators.
-              </p>
+              <p>SmartAttend is a cutting-edge attendance management system that leverages face recognition technology to automate and streamline the attendance process for educational institutions.</p>
+              <p>Built with modern technologies including React, TypeScript, FastAPI, and MongoDB, SmartAttend offers a secure, efficient, and user-friendly solution for teachers, students, and administrators.</p>
               <div className="tech-stack">
                 <span className="tech-badge">React</span>
                 <span className="tech-badge">TypeScript</span>
@@ -460,152 +441,121 @@ const Homepage: React.FC = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* ✅ Contact Section - DYNAMIC FORM */}
       <section id="contact" className="contact">
         <div className="container">
           <h2 className="section-title">Get In Touch</h2>
-          <p className="section-subtitle">
-            Have questions? We'd love to hear from you.
-          </p>
-
+          <p className="section-subtitle">Have questions? We'd love to hear from you.</p>
           <div className="contact-grid">
             <div className="contact-info">
               <div className="contact-item">
-                <div className="contact-icon">
-                  {/* 📧 */}
-                  <i className="fa-solid fa-envelope"></i>
-                </div>
+                <div className="contact-icon"><i className="fa-solid fa-envelope"></i></div>
                 <div>
                   <h4>Email</h4>
                   <p>adilbarki111@gmail.com</p>
-                  {/* <p>support@smartattend.com</p> */}
                 </div>
               </div>
               <div className="contact-item">
-                <div className="contact-icon">
-                  {/* 📞 */}
-                  <i className="fa-solid fa-phone"></i>
-                </div>
+                <div className="contact-icon"><i className="fa-solid fa-phone"></i></div>
                 <div>
                   <h4>Phone</h4>
                   <p>+92 313 7651005</p>
                 </div>
               </div>
               <div className="contact-item">
-                <div className="contact-icon">
-                  {/* 📍 */}
-                  <i className="fa-solid fa-map-marker-alt"></i>
-                </div>
+                <div className="contact-icon"><i className="fa-solid fa-map-marker-alt"></i></div>
                 <div>
                   <h4>Address</h4>
-                  <p>Peshawer, Pakistan</p>
+                  <p>Peshawar, Pakistan</p>
                 </div>
               </div>
             </div>
-            <form className="contact-form">
+            
+            {/* ✅ DYNAMIC FORM */}
+            <form className="contact-form" onSubmit={handleContactSubmit}>
               <input
                 type="text"
                 placeholder="Your Name"
                 className="form-input"
+                value={contactForm.name}
+                onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                required
               />
               <input
                 type="email"
                 placeholder="Your Email"
                 className="form-input"
+                value={contactForm.email}
+                onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                required
               />
               <textarea
                 rows={4}
                 placeholder="Your Message"
                 className="form-input"
+                value={contactForm.message}
+                onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                required
               ></textarea>
-              <button type="submit" className="btn-primary">
-                Send Message
+              <button type="submit" className="btn-primary" disabled={sending}>
+                {sending ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* CTA */}
       <section className="cta">
         <div className="container">
           <div className="cta-content">
             <h2>Ready to Get Started?</h2>
-            <p>
-              Join thousands of institutions using SmartAttend for attendance
-              management
-            </p>
+            <p>Join thousands of institutions using SmartAttend for attendance management</p>
             <div className="cta-buttons">
-              <Link to="/signup" className="btn-cta">
-                Sign Up Now
-              </Link>
-              <Link to="/login" className="btn-cta-secondary">
-                Login
-              </Link>
+              <Link to="/signup" className="btn-cta">Sign Up Now</Link>
+              <Link to="/login" className="btn-cta-secondary">Login</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ✅ Footer with Legal Links */}
       <footer className="footer">
-        <div className="container "> 
+        <div className="container">
           <div className="footer-content">
             <div className="footer-section">
               <h3>SmartAttend</h3>
-              <p>Digital Attendance via  Face Recognition</p>
+              <p>Digital Attendance via Face Recognition</p>
             </div>
             <div className="footer-section">
               <h4>Quick Links</h4>
               <ul>
-                <li>
-                  <a href="#home">Home</a>
-                </li>
-                <li>
-                  <a href="#features">Features</a>
-                </li>
-                <li>
-                  <a href="#how-it-works">How It Works</a>
-                </li>
-                <li>
-                  <a href="#pricing">Pricing</a>
-                </li>
-                <li>
-                  <a href="#contact">Contact</a>
-                </li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Legal</h4>
               <ul>
-                <li>
-                  <a href="#">Privacy Policy</a>
-                </li>
-                <li>
-                  <a href="#">Terms of Service</a>
-                </li>
-                <li>
-                  <a href="#">Cookie Policy</a>
-                </li>
+                {/* ✅ Legal Pages Links */}
+                <li><Link to="/privacy-policy">Privacy Policy</Link></li>
+                <li><Link to="/terms-of-service">Terms of Service</Link></li>
+                <li><Link to="/cookie-policy">Cookie Policy</Link></li>
               </ul>
             </div>
             <div className="footer-section">
               <h4>Follow Us</h4>
               <div className="social-links">
-                <a
-                  href="https://www.facebook.com/share/1D4H61sPyS/"
-                  aria-label="Facebook"
-                >
+                <a href="https://www.facebook.com/share/1D4H61sPyS/" aria-label="Facebook">
                   <i className="fab fa-facebook-f"></i>
                 </a>
                 <a href="https://wa.me/923137651005" aria-label="WhatsApp">
-                  {" "}
                   <i className="fab fa-whatsapp"></i>
                 </a>
-                <a
-                  href="https://www.linkedin.com/in/adil-nawaz-khan-15475b2b4"
-                  aria-label="LinkedIn"
-                >
+                <a href="https://www.linkedin.com/in/adil-nawaz-khan-15475b2b4" aria-label="LinkedIn">
                   <i className="fab fa-linkedin-in"></i>
                 </a>
                 <a href="https://github.com/adilbarki" aria-label="GitHub">
@@ -615,10 +565,7 @@ const Homepage: React.FC = () => {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>
-              &copy; 2026 SmartAttend. All rights reserved. | Digital Attendance
-              via Face Recognition
-            </p>
+            <p>&copy; 2026 SmartAttend. All rights reserved. | Digital Attendance via Face Recognition</p>
           </div>
         </div>
       </footer>

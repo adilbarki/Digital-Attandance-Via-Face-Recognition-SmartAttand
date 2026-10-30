@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: smartattend-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin123
+      - MONGO_INITDB_DATABASE=digital_attendance
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - smartattend-network
+
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: smartattend-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGODB_URL=mongodb://admin:admin123@mongodb:27017/digital_attendance?authSource=admin
+      - DATABASE_NAME=digital_attendance
+      - SECRET_KEY=your-super-secret-key-change-this
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=10080
+      - BACKEND_PORT=8000
+      - FRONTEND_URL=http://localhost
+      - FACE_TOLERANCE=0.45
+      - FACE_MODEL_PATH=face_data/encodings/face_recognition_model.pkl
+    volumes:
+      - ./backend/face_data:/app/face_data
+      - ./backend/uploads:/app/uploads
+      - ./backend/reports:/app/reports
+    depends_on:
+      - mongodb
+    networks:
+      - smartattend-network
+
+  # Frontend
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: smartattend-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - smartattend-network
+
+# Volumes
+volumes:
+  mongodb_data:
+    driver: local
+
+# Networks
+networks:
+  smartattend-network:
+    driver: bridge

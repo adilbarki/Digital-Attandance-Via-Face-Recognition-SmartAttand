@@ -1,0 +1,163 @@
+/* Legal Pages CSS - White Background */
+.legal-page {
+  min-height: 100vh;
+  background: #FFFFFF;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.legal-navbar {
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  padding: 1rem 0;
+  z-index: 100;
+}
+
+.legal-navbar .nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.legal-navbar .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.legal-navbar .logo-icon {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: white;
+  font-size: 18px;
+}
+
+.legal-navbar .logo-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.btn-back {
+  padding: 0.6rem 1.4rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.btn-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.legal-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 24px 100px;
+}
+
+.legal-container h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.last-updated {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 3rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.legal-container section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border-left: 4px solid #8b5cf6;
+  transition: all 0.3s;
+}
+
+.legal-container section:hover {
+  box-shadow: 0 5px 20px rgba(139, 92, 246, 0.08);
+  transform: translateX(4px);
+}
+
+.legal-container h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+}
+
+.legal-container h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #475569;
+  margin: 1.2rem 0 0.6rem;
+}
+
+.legal-container p {
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
+}
+
+.legal-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.8rem 0;
+}
+
+.legal-container ul li {
+  padding: 0.5rem 0 0.5rem 1.8rem;
+  position: relative;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.legal-container ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #8b5cf6;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .legal-container h1 {
+    font-size: 2rem;
+  }
+  
+  .legal-container {
+    padding: 40px 16px 60px;
+  }
+  
+  .legal-container section {
+    padding: 1.2rem;
+  }
+}

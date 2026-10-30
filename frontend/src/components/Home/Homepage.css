@@ -11,6 +11,7 @@
   position: relative;
   height: auto !important;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #FFFFFF;
 }
 
 section {
@@ -225,7 +226,8 @@ section {
   display: flex;
   align-items: center;
   padding-top: 80px;
-  background: linear-gradient(160deg, #f5f3ff 0%, #ede9fe 50%, #e0e7ff 100%);
+  background: #FFFFFF;
+  /* background: linear-gradient(160deg, #f5f3ff 0%, #ede9fe 50%, #e0e7ff 100%); */
   position: relative;
   overflow: hidden;
 }
@@ -472,7 +474,8 @@ section {
 
 /* ========== FEATURES ========== */
 .features {
-  background: white;
+  /* background: white; */
+  background: #FFFFFF;
   padding: 100px 0;
 }
 
@@ -536,7 +539,8 @@ section {
 
 /* ========== HOW IT WORKS ========== */
 .how-it-works {
-  background: #f8fafc;
+  background: #FFFFFF;
+  /* background: #f8fafc; */
   padding: 100px 0;
 }
 
@@ -605,7 +609,8 @@ section {
 
 /* ========== PRICING ========== */
 .pricing {
-  background: white;
+  background: #FFFFFF;
+  /* background: white; */
   padding: 100px 0;
 }
 
@@ -711,7 +716,8 @@ section {
 
 /* ========== TESTIMONIALS ========== */
 .testimonials {
-  background: #f8fafc;
+   background: #FFFFFF;
+  /* background: #f8fafc; */
   padding: 100px 0;
 }
 
@@ -762,7 +768,8 @@ section {
 
 /* ========== FAQ ========== */
 .faq {
-  background: white;
+  background: #FFFFFF;
+  /* background: white; */
   padding: 100px 0;
 }
 
@@ -800,7 +807,8 @@ section {
 
 /* ========== ABOUT ========== */
 .about {
-  background: #f8fafc;
+  background : #FFFFFF;
+  /* background: #f8fafc; */
   padding: 100px 0;
 }
 
@@ -881,7 +889,8 @@ section {
 
 /* ========== CONTACT ========== */
 .contact {
-  background: white;
+  background: #FFFFFF;
+  /* background: white; */
   padding: 100px 0;
 }
 
@@ -969,7 +978,8 @@ section {
 
 /* ========== CTA ========== */
 .cta {
-  background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+  background: #FFFFFF;
+  /* background: linear-gradient(135deg, #f5f3ff, #ede9fe); */
   padding: 80px 0;
   text-align: center;
 }
@@ -1034,7 +1044,7 @@ section {
 /* ========== FOOTER ========== */
 .footer {
   background: #0f172a;
-  color: white;
+  /* color: white; */
   padding: 60px 0 20px;
   width: 100%;
   position: relative;

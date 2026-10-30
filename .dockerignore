@@ -1,0 +1,52 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Virtual environment
+venv/
+backend/venv/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# Logs
+*.log
+
+# Docker
+Dockerfile*
+docker-compose*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+dist/
+build/
+
+# Database
+*.db
+*.sqlite
+
+# Uploads (will be mounted as volume)
+uploads/
+reports/
+face_data/dataset/
+face_data/encodings/

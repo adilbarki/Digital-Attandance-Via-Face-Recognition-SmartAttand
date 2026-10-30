@@ -13,18 +13,18 @@ def train_face_recognition():
     print("📸 Training with Face Recognition Library...")
     print(f"Dataset: {dataset_path}")
     
-    for person_name in os.listdir(dataset_path):
-        person_path = os.path.join(dataset_path, person_name)
+    for folder_name in os.listdir(dataset_path):
+        folder_path = os.path.join(dataset_path, folder_name)
         
-        if not os.path.isdir(person_path):
+        if not os.path.isdir(folder_path):
             continue
         
-        print(f"\n👤 Processing: {person_name}")
+        print(f"\n👤 Processing: {folder_name}")
         person_encodings = []
         
-        for image_file in os.listdir(person_path):
+        for image_file in os.listdir(folder_path):
             if image_file.lower().endswith(('.jpg', '.jpeg', '.png')):
-                image_path = os.path.join(person_path, image_file)
+                image_path = os.path.join(folder_path, image_file)
                 
                 try:
                     # Load image and get face encoding
@@ -43,7 +43,7 @@ def train_face_recognition():
             # Take average of multiple encodings for better accuracy
             avg_encoding = [sum(x)/len(person_encodings) for x in zip(*person_encodings)]
             known_encodings.append(avg_encoding)
-            known_names.append(person_name)
+            known_names.append(folder_name)  # ✅ folder_name = roll_number
             print(f"  📊 Total valid images: {len(person_encodings)}")
     
     if known_encodings:
@@ -58,18 +58,16 @@ def train_face_recognition():
         print("\n" + "="*50)
         print("✅ Training Complete!")
         print(f"   Total persons: {len(known_names)}")
+        print(f"   Roll numbers: {known_names}")
         print(f"   Model saved to: {model_path}")
         print("="*50)
         
         # Print all trained persons
-        print("\n📋 Trained persons:")
+        print("\n📋 Trained Roll Numbers:")
         for name in known_names:
             print(f"   ✅ {name}")
     else:
         print("\n❌ No faces found!")
-
-if __name__ == "__main__":
-    train_face_recognition()
 
 # ✅ Add this function for incremental training
 def incremental_train(student_roll_number: str, image_path: str):
@@ -116,11 +114,12 @@ def incremental_train(student_roll_number: str, image_path: str):
         with open(model_path, 'wb') as f:
             pickle.dump({'encodings': known_encodings, 'names': known_names}, f)
         print(f"💾 Model saved. Total students in model: {len(known_names)}")
-        print(f"📋 Students in model: {known_names}")
+        print(f"📋 Roll numbers in model: {known_names}")
         return True
     else:
         print(f"❌ No face detected in image for student: {student_roll_number}")
         print(f"   Face locations found: {len(face_locations)}")
-        return False   
-    
-     
+        return False
+
+if __name__ == "__main__":
+    train_face_recognition()
